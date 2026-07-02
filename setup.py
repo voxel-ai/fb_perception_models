@@ -4,14 +4,17 @@ with open("requirements.txt") as f:
     required = f.read().splitlines()
 
 setup(
-    name="perception_models",
+    name="fb_perception_models",
     version="1.0.0",
     author="Meta AI Research, FAIR",
     description="Models of the Perception family.",
     url="https://github.com/facebookresearch/perception_models",
-    packages=find_packages(),
+    # Everything ships under the single top-level `fb_perception_models` package
+    # (upstream's generic `core`/`apps` were nested under it) so nothing collides
+    # with a consumer's own top-level `core` namespace.
+    packages=find_packages(include=["fb_perception_models", "fb_perception_models.*"]),
     package_data={
-        "core.vision_encoder": ["bpe_simple_vocab_16e6.txt.gz"]
+        "fb_perception_models.vision_encoder": ["bpe_simple_vocab_16e6.txt.gz"]
     },
     install_requires=required,
     classifiers=[
