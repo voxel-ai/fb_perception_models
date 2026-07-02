@@ -1,7 +1,16 @@
 from setuptools import find_packages, setup
 
-with open("requirements.txt") as f:
-    required = f.read().splitlines()
+# NOTE: upstream's requirements.txt is the full *training* stack with hard `==`
+# pins (numpy==2.1.2, scipy==1.15.2, …) that conflict with a consumer's own lock.
+# This fork is vendored only for the vision_encoder inference path, so we declare
+# just that path's runtime deps, UNPINNED, letting the host resolver pick versions.
+_RUNTIME_DEPS = [
+    "torch",
+    "numpy",
+    "einops",
+    "timm",
+    "huggingface_hub",
+]
 
 setup(
     name="fb_perception_models",
@@ -16,7 +25,7 @@ setup(
     package_data={
         "fb_perception_models.vision_encoder": ["bpe_simple_vocab_16e6.txt.gz"]
     },
-    install_requires=required,
+    install_requires=_RUNTIME_DEPS,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: Other/Proprietary License",
