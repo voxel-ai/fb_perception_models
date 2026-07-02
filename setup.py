@@ -22,6 +22,9 @@ setup(
         "License :: Other/Proprietary License",
     ],
     license="FAIR Noncommercial Research License",
-    python_requires=">=3.11",
+    # Upstream set >=3.11 conservatively; the vision_encoder import path uses no
+    # 3.11-only features and compiles/runs under 3.10 (matches the voxel monorepo
+    # and the sibling dinov2 fork). Relaxed so it resolves in a 3.10 pip lock.
+    python_requires=">=3.10",
     include_package_data=True,
 )
